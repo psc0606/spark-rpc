@@ -13,7 +13,7 @@ object SyncHelloClient {
   def main(args: Array[String]): Unit = {
     val rpcEnv: RpcEnv = RpcEnv.create("hello-word", "localhost", 3031, new SparkConf(), null, clientMode = true)
     val endPointRef: RpcEndpointRef = rpcEnv.setupEndpointRef(RpcAddress("localhost", 3031), "hello-service")
-    val result = endPointRef.askSync[String](SayBye("neo"))
+    val result = endPointRef.askSync[String](SayBye("hello"))
     println(result)
   }
 }
@@ -23,7 +23,7 @@ object AsyncHelloClient {
     import scala.concurrent.ExecutionContext.Implicits.global
     val rpcEnv: RpcEnv = RpcEnv.create("hello-word", "localhost", 3031, new SparkConf(), null, clientMode = true)
     val endPointRef: RpcEndpointRef = rpcEnv.setupEndpointRef(RpcAddress("localhost", 3031), "hello-service")
-    val future: Future[String] = endPointRef.ask[String](SayHi("neo"))
+    val future: Future[String] = endPointRef.ask[String](SayHi("hello"))
     future.onComplete {
       case scala.util.Success(value) => println(s"Got the result = $value")
       case scala.util.Failure(e) => println(s"Got error: $e")
